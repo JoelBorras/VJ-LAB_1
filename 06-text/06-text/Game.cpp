@@ -6,6 +6,7 @@
 void Game::init()
 {
 	bPlay = true;
+	bolet = false;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	scene.init();
 }
@@ -21,12 +22,16 @@ void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	scene.render();
+	if (bolet)
+		scene.show_text();
 }
 
 void Game::keyPressed(int key)
 {
 	if(key == 27) // Escape code
 		bPlay = false;
+	if (key == 'b')
+		bolet = !bolet;
 	keys[key] = true;
 }
 

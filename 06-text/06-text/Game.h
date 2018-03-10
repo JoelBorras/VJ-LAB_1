@@ -40,6 +40,7 @@ public:
 
 private:
 	bool bPlay;                       // Continue to play game?
+	bool bolet;
 	Scene scene;                      // Scene to render
 	bool keys[256], specialKeys[256]; // Store key states so that 
 	                                  // we can have access at any time

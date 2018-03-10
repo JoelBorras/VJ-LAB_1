@@ -26,6 +26,7 @@ public:
 
 	void init();
 	void update(int deltaTime);
+	void show_text();
 	void render();
 
 private:

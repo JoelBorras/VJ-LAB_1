@@ -26,15 +26,15 @@ void Scene::init()
 
 	initShaders();
 	quad = Quad::createQuad(0.f, 0.f, 128.f, 128.f, simpleProgram);
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(0.5f, 0.5f);
+	texCoords[0] = glm::vec2(0.f, 0.5f); texCoords[1] = glm::vec2(0.5f, 1.f);
 	texQuad[0] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 	texCoords[0] = glm::vec2(0.5f, 0.5f); texCoords[1] = glm::vec2(1.f, 1.f);
 	texQuad[1] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(2.f, 2.f);
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(9.f, 1.9f);
 	texQuad[2] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 	// Load textures
 	texs[0].loadFromFile("images/varied.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	texs[1].loadFromFile("images/rocks.jpg", TEXTURE_PIXEL_FORMAT_RGB);
+	texs[1].loadFromFile("images/brick.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 }
@@ -48,7 +48,7 @@ void Scene::render()
 {
 	glm::mat4 modelview;
 
-	simpleProgram.use();
+	/*simpleProgram.use();
 	simpleProgram.setUniformMatrix4f("projection", projection);
 	simpleProgram.setUniform4f("color", 0.2f, 0.2f, 0.8f, 1.0f);
 
@@ -82,7 +82,36 @@ void Scene::render()
 	modelview = glm::rotate(modelview, -currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
 	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
 	texProgram.setUniformMatrix4f("modelview", modelview);
+	texQuad[2]->render(texs[1]);*/
+
+	simpleProgram.use();
+	simpleProgram.setUniformMatrix4f("projection", projection);
+	simpleProgram.setUniform4f("color", 0.3f, 0.5f, 0.9f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(128.f, 48.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	modelview = glm::scale(modelview, glm::vec3(10.f, 10.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	simpleProgram.setUniformMatrix4f("modelview", modelview);
+	quad->render();
+
+	texProgram.use();
+	texProgram.setUniformMatrix4f("projection", projection);
+	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 304.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	modelview = glm::scale(modelview, glm::vec3(9.f, 1.9f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	texProgram.setUniformMatrix4f("modelview", modelview);
 	texQuad[2]->render(texs[1]);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(192.f, 152.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3((sin(currentTime / 500.f) + 1.0f)*50.0f, 0.0f, 1.0f));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	texProgram.setUniformMatrix4f("modelview", modelview);
+	texQuad[0]->render(texs[0]);
 }
 
 void Scene::initShaders()
